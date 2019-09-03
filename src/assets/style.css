@@ -3,6 +3,7 @@ body {
     padding:0;
     box-sizing:border-box;
     font-size:14px;
+    background-color:#e4e4e4;
 }
 
 ul li {
@@ -118,4 +119,145 @@ footer {
     display: table-cell;
     vertical-align: middle;
   }
+  
+  .modal-container {
+    width: 300px;
+    margin: 0px auto;
+    padding: 20px 30px;
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+    transition: all .3s ease;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  
+  .modal-header h3 {
+    margin-top: 0;
+    color: #42b983;
+  }
+  
+  .modal-body {
+    margin: 20px 0;
+  }
+  
+  .modal-default-button {
+    float: right;
+  }
+  
+  .modal-enter, .modal-leave {
+    opacity: 0;
+  }
+  
+  .modal-enter .modal-container,
+  .modal-leave .modal-container {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
 
+  .btn-submit {
+      background-color: #F3BB52;
+      border:none !important;
+  }
+
+  .banner--sub {
+      height:300px;
+      overflow:hidden;
+      position: relative;
+  }
+
+  .banner--sub img {
+      filter:brightness(50%);
+  }
+
+  .banner-page {
+      position: absolute;
+  }
+
+  .page-title {
+      position:absolute;
+      text-transform: uppercase;
+      font-size: 1.6em;
+      top:50%;
+      left:50%;
+      transform: translate(-50%,-50%);
+  }
+
+  .yellow-img {
+      height:300px;
+      overflow:hidden;
+      width:100%;
+      margin:20px 0;
+      position: relative;
+  }
+
+  .s-right {
+      position: absolute;
+      background-color:#F3B541;
+      width:25%;
+      height:100%;
+      right:0;
+  }
+
+  .s-right button {
+    padding:5px 0;
+    background-color:#f7f7f7;
+    border-radius:6px;
+  }
+
+  .s-left {
+    position: absolute;
+    background-color:#14436B;
+    width:25%;
+    height:100%;
+    left:0;
+}
+
+.s-left button {
+    padding:5px 0;
+    background-color:#f7f7f7;
+    border-radius:12px;
+  }
+
+  .s-right,.s-left {
+      padding:40px;
+  }
+
+  .explore-big-img {
+      position: relative;
+  }
+
+  .explore-caption {
+      position: absolute;
+      width:80%;
+      padding:20px;
+      bottom:-10%;
+      background-color: white;
+      border:1px solid #14436B;
+      left:50%;
+      transform: translateX(-50%);
+  }
+
+  .desc-box {
+      background-color:white;
+      padding:50px;
+      border:1px solid #F3BB52;
+  }
+
+  .artist {
+      color: #F3B541;
+      font-weight:600;
+  }
+
+  .bed--img-container {
+      width: 150px;
+      height: 150px;
+      overflow: hidden;
+      border-radius:50%;
+      display: flex;
+      border:1px solid #14436B;
+  }
+
+  .bed-img--container img {
+      width:200px;
+      height:auto;
+  }
