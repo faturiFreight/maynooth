@@ -22,6 +22,11 @@ ul li {
     background-color: #14436B;
 }
 
+#navbarSupportedContent {
+    display: flex !important;
+    justify-content: flex-end;
+}
+
 .logo-container {
     width:150px;
 }
@@ -260,4 +265,8 @@ footer {
   .bed-img--container img {
       width:200px;
       height:auto;
+  }
+
+  .modal-header {
+      background-color: #14436B !important;
   }

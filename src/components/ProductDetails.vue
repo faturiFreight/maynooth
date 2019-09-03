@@ -11,14 +11,9 @@
   >
     <div class="modal-container">
       <h4>Detailed View1</h4>
-      <div class="car-item" v-for="car in carlist" v-if="modalActiveContent($index)" :key="car.id">
-        <h1>{{car.title}}</h1>
-        <p>{{car.description}}</p>
-        <button
-          v-if="modalActiveContent($index)"
-          class="modal-default-button"
-          @click="setModalClose"
-        >Close me please</button>
+      <div class="car-item">
+        <h1>{{ title }}</h1>
+        <p>{{ description }}</p>
       </div>
     </div>
   </div>
@@ -35,18 +30,14 @@ export default {
       type: Boolean,
       required: true,
       twoWay: true
-    }
-  },
-  methods: {
-    // check wich content index is active
-    modalActiveContent: function(i) {
-      return this.active === i;
     },
-    // close modal
-    setModalClose: function() {
-      this.show = false;
-      //if need set active content to zero object
-      // this.active = 0;
+    title: {
+      required: true,
+      type: String
+    },
+    description: {
+      required: true,
+      type: String
     }
   }
 };

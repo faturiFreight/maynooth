@@ -5,6 +5,8 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './assets/style.css'
+import Vuex from 'vuex'
+import { store } from './store'
 import Home from './components/Home'
 import SignIn from './components/SignIn'
 import LivingRoom from './components/LivingRoom'
@@ -13,6 +15,7 @@ import Kitchen from './components/Kitchen'
 import Cart from './components/Cart'
 
 Vue.use(VueRouter)
+Vue.use(Vuex)
 
 const routes = [
   { path:'/', component: Home },
