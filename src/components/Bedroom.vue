@@ -15,7 +15,7 @@
               <h6 class="artist">By Quarentina</h6>
               <div class="desc-box">
                   <p class="text-dark">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam convallis ligula nec quam egestas, id molestie leo dignissim. Nullam consequat iaculis purus ac ornare. Phasellus at feugiat orci. 
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam convallis ligula nec quam egestas, id molestie leo dignissim. Nullam consequat iaculis purus ac ornare. Phasellus at feugiat orci.
                   </p>
               </div>
                   </div>
@@ -29,12 +29,32 @@
 </template>
 
 <script>
+import axios from 'axios'
 import BedroomProd from './BedroomProd'
 
 export default {
     name:'Bedroom',
     components: {
         BedroomProd
+    },
+    data(){
+      return {
+        items: []
+      }
+    },
+    mounted() {
+      axios
+      .get('http://192.168.1.98:3000/categories/2')
+      .then(res => {
+        this.items = res.data.data.map(bed => {
+          console.log(res.data.data)
+          return {
+            id : bed.id,
+            name: bed.name
+          }
+        })
+      })
+      .catch(error => console.log("error"));
     }
 }
 </script>

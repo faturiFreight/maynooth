@@ -38,17 +38,26 @@
                 <div class="col-lg-6">
                   <b-card no-body>
                     <b-tabs card>
-                      <b-tab no-body title="first" class="text-dark">
-                        <b-card-img top :src="currentItem.thumb"></b-card-img>
-                      </b-tab>
-                      <b-tab no-body title="second">
-                        <b-card-img top src="https://picsum.photos/600/200/?image=25"></b-card-img>
-                      </b-tab>
-                      <b-tab no-body title="third">
-                        <b-card-img top src="https://picsum.photos/600/200/?image=26"></b-card-img>
+                      <b-tab
+                        no-body
+                        title="first"
+                        class="text-dark"
+                        v-for="image in currentItem.images"
+                      >
+                        <b-card-img top :src="image"></b-card-img>
                       </b-tab>
                     </b-tabs>
                   </b-card>
+                  <div class="d-flex mt-4" v-if="showLists">
+                      <div class="vary mr-5">
+                        <p class="text-dark mb-1">Variant:</p>
+                        <h6 class="text-dark mr-5">{{ form.vary }}</h6>
+                      </div>
+                      <div class="quantity ml-5">
+                        <p class="text-dark mb-1">Quantity:</p>
+                        <h6 class="text-dark mr-5">{{ counter }}</h6>
+                      </div>
+                    </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="detail-wrapper">
@@ -56,11 +65,11 @@
                     <hr />
                     <div class="price d-flex">
                       <p class="text-dark mr-3">Price</p>
-                      <h3 class="text-dark font-weight-bold">{{currentItem.price}}</h3>
+                      <h3 class="text-dark font-weight-bold" v-model="form.price">{{currentItem.price}}</h3>
                     </div>
                     <div class="d-flex">
                       <p class="text-dark mr-3">Size</p>
-                      <h3 class="text-dark font-weight-bold">{{currentItem.size}}</h3>
+                      <h3 class="text-dark font-weight-bold" v-model="form.size">{{currentItem.size}}</h3>
                     </div>
                     <div class="d-flex">
                       <p class="text-dark mr-3">Description</p>
@@ -68,20 +77,37 @@
                     </div>
                     <div class="qty">
                       <p class="text-dark">Select Quantity</p>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <button class="btn btn-primary" type="button" @click="counter++">+</button>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <button class="btn btn-primary" type="button" @click="counter++">+</button>
+                        </div>
+                        <div class="input-group-append">
+                          <input type="text" class="form-control" placeholder="0" :value='counter'/>
+                          <button
+                            class="btn btn-primary"
+                            type="button"
+                            @click="counter--"
+                            v-if="counter > 0"
+                          >-</button>
+                        </div>
                       </div>
-                      <div class="input-group-append">
-                        <input type="text" class="form-control" placeholder="0" v-model="counter">
-                        <button class="btn btn-primary" type="button" @click="counter--" v-if="counter > 0">-</button>
-                      </div>
-                    </div>
-                    <button class="btn btn-sm btn-add bg-secondary text-light" type="button" @click="addToList()" v-if="counter > 0">Add</button>
-                    </div>
-                    <div class="d-flex">
-                      <h6 class="text-dark mr-5"> {{ added.price }} </h6>
-                      <h6 class="text-dark mr-5"> {{ added.quantity }} </h6>
+                      <p class="text-dark">Select Variant</p>
+                      <b-form-select class="mb-3" v-model="form.vary">
+                        <option :value="null" class="text-dark">Select</option>
+                        <option v-for="vary in currentItem.variants" :value="vary.name" :key="vary.id">{{vary.name}}</option>
+                      </b-form-select>
+                      <p class="text-dark">Select City</p>
+                      <b-form-select class="mb-3" v-model="form.city">
+                        <option :value="null">Select</option>
+                        <option v-for="city in cities" :value="city.name" :key="city.id" >{{city.name}}</option>
+                      </b-form-select>
+
+                      <button
+                        class="btn btn-sm btn-add bg-secondary text-light"
+                        type="button"
+                        @click="addToList()"
+                        v-if="counter > 0"
+                      >Add</button>
                     </div>
                   </div>
                 </div>
@@ -90,7 +116,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-primary" @click="addToCart()">Add to Cart</button>
           </div>
         </div>
       </div>
@@ -110,11 +136,26 @@ export default {
   methods: {
     setCurrentItem: function(item) {
       this.currentItem = item;
+    },
+    addToList: function(summary) {
+      this.showLists = true;
+      this.summary = item;
+    },
+    addToCart: function() {
+      let currentObj = this;
+      axios
+      .post('http://192.168.1.98:3000/carts/add', {
+        address : this.cities.name
+      }).then(res => {
+        currentObj.output = res.data;
+      }).catch(err => {
+        currentObj.output = err;
+      });
     }
   },
   mounted() {
     axios
-      .get("http://192.168.1.95:3000/products?categoryId=1&order=createdAt")
+      .get("http://192.168.1.98:3000/products?categoryId=1&order=createdAt")
       .then(res => {
         console.log(res.data.data);
         this.items = res.data.data.map(product => {
@@ -122,30 +163,57 @@ export default {
             id: product.id,
             title: product.name,
             thumb: product.imageUrl,
-            img: product.images,
+            images: product.images,
             size: product.size,
             price: product.price,
-            description: product.description
+            description: product.description,
+            variants: product.variants
           };
         });
       })
       .catch(error => console.log("error"));
+      axios
+      .get("http://192.168.1.98:3000/cities")
+      .then(r => {
+        console.log(r.data.data);
+        this.cities = r.data.data.map(loc => {
+          return {
+            id: loc.id,
+            name: loc.name
+          }
+        })
+      })
+      .catch(error => console.log("error fetching location"))
   },
   data() {
     return {
-      items: [],
+      items: [{
+        variants:[],
+    }],
       currentItem: {},
-      added:{},
+      added: {},
+      cities:[],
       counter: 0,
-      price:0,
-      quanity: 0
-    };
+      price: 0,
+      quanity: 0,
+      output:'',
+      form: {
+        price:null,
+        qty:null,
+        city:'',
+        size:'',
+        vary:'',
+        counter:0,
+      },
+      summary:{},
+      showLists: false
+    }
   }
 };
 </script>
 
 <style scoped>
-  .form-control {
-    border-radius: 0 !important;
-  }
+.form-control {
+  border-radius: 0 !important;
+}
 </style>

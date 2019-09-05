@@ -78,7 +78,7 @@ export default {
     },
     mounted() {
         axios
-        .get('http://192.168.1.95:3000/categories/1')
+        .get('http://192.168.1.98:3000/categories/1')
         .then(res => { this.content = res.data.data.details })
         .catch(error => (console.log("error"))
         )

@@ -89,7 +89,7 @@ export default {
   },
   mounted() {
     axios
-    .get('http://192.168.1.95:3000/products?categoryId=1&order=price')
+    .get('http://192.168.1.98:3000/products?categoryId=1&order=price')
     .then(res => {
       console.log(res.data.data);
          this.items = res.data.data.map(product => {
